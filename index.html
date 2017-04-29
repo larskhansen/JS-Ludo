@@ -1,0 +1,192 @@
+<!doctype html>
+<html class="no-js" lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ludo</title>
+    <link rel="stylesheet" href="css/foundation.css">
+    <link rel="stylesheet" href="css/app.css">
+  </head>
+  <body>
+    <div class="row">
+      <div class="small-12 columns">
+        <h1>Ludo</h1>
+        <p>Dette er under opbygning. Der mangler en masse endnu.</p>
+        <p>Aktiv spiller: <span id="showActivePlayer"></span></p>
+      </div>
+      &nbsp;<svg id="diceSvg" width="4em" height="4em">
+        <rect id="dice" width="4em" height="4em" stroke="black" fill="lightgray" />
+        <!-- ONE -->
+        <circle dice="one" class="hide" id="one-one" cx="2em" cy="2em" r="0.4em" stroke="black" fill="black" />
+        <!-- TWO -->
+        <circle dice="two" class="hide" id="two-one" cx="1.5em" cy="1.5em" r="0.4em" stroke="black" fill="black" />
+        <circle dice="two" class="hide" id="two-two" cx="2.5em" cy="2.5em" r="0.4em" stroke="black" fill="black" />
+        <!-- THREE -->
+        <circle dice="three" class="hide" id="three-one" cx="1em" cy="1em" r="0.4em" stroke="black" fill="black" />
+        <circle dice="three" class="hide" id="three-two" cx="2em" cy="2em" r="0.4em" stroke="black" fill="black" />
+        <circle dice="three" class="hide" id="three-three" cx="3em" cy="3em" r="0.4em" stroke="black" fill="black" />
+        <!-- FOUR -->
+        <circle dice="four" class="hide" id="four-one" cx="1em" cy="1em" r="0.4em" stroke="black" fill="black" />
+        <circle dice="four" class="hide" id="four-two" cx="3em" cy="1em" r="0.4em" stroke="black" fill="black" />
+        <circle dice="four" class="hide" id="four-three" cx="1em" cy="3em" r="0.4em" stroke="black" fill="black" />
+        <circle dice="four" class="hide" id="four-four" cx="3em" cy="3em" r="0.4em" stroke="black" fill="black" />
+        <!-- FIVE -->
+        <circle dice="five" class="hide" id="five-one" cx="1em" cy="1em" r="0.4em" stroke="black" fill="black" />
+        <circle dice="five" class="hide" id="five-two" cx="3em" cy="1em" r="0.4em" stroke="black" fill="black" />
+        <circle dice="five" class="hide" id="five-three" cx="1em" cy="3em" r="0.4em" stroke="black" fill="black" />
+        <circle dice="five" class="hide" id="five-four" cx="3em" cy="3em" r="0.4em" stroke="black" fill="black" />
+        <circle dice="five" class="hide" id="five-five" cx="2em" cy="2em" r="0.4em" stroke="black" fill="black" />
+        <!-- SIX -->
+          <circle dice="six" id="six-one" cx="1em" cy="1em" r="0.4em" stroke="black" fill="black" />
+          <circle dice="six" id="six-two" cx="3em" cy="1em" r="0.4em" stroke="black" fill="black" />
+          <circle dice="six" id="six-three" cx="1em" cy="2em" r="0.4em" stroke="black" fill="black" />
+          <circle dice="six" id="six-four" cx="3em" cy="2em" r="0.4em" stroke="black" fill="black" />
+          <circle dice="six" id="six-five" cx="1em" cy="3em" r="0.4em" stroke="black" fill="black" />
+          <circle dice="six" id="six-six" cx="3em" cy="3em" r="0.4em" stroke="black" fill="black" />
+      </svg>
+      <br />
+      <svg width="60em" height="60em">
+        <rect width="48em" height="49em" stroke="blue" fill="black"
+       fill-opacity="0.5" stroke-opacity="0.8"/>
+        <!-- YELLOW HOME BASE -->
+        <circle id="yellow-base-1" cx="6em" cy="6em" r="3em" stroke="green" stroke-width="4" fill="yellow" />
+        <circle id="yellow-base-2" cx="14em" cy="6em" r="3em" stroke="green" stroke-width="4" fill="yellow" />
+        <circle id="yellow-base-3" cx="6em" cy="14em" r="3em" stroke="green" stroke-width="4" fill="yellow" />
+        <circle id="yellow-base-4" cx="14em" cy="14em" r="3em" stroke="green" stroke-width="4" fill="yellow" />
+        <!-- GREEN HOME BASE -->
+        <circle id="green-base-1" cx="34em" cy="6em" r="3em" stroke="green" stroke-width="4" fill="green" />
+        <circle id="green-base-2" cx="34em" cy="14em" r="3em" stroke="green" stroke-width="4" fill="green" />
+        <circle id="green-base-3" cx="42em" cy="6em" r="3em" stroke="green" stroke-width="4" fill="green" />
+        <circle id="green-base-4" cx="42em" cy="14em" r="3em" stroke="green" stroke-width="4" fill="green" />
+        <!-- RED HOME BASE -->
+        <circle id="red-base-1" cx="34em" cy="34em" r="3em" stroke="green" stroke-width="4" fill="red" />
+        <circle id="red-base-2" cx="42em" cy="34em" r="3em" stroke="green" stroke-width="4" fill="red" />
+        <circle id="red-base-3" cx="34em" cy="42em" r="3em" stroke="green" stroke-width="4" fill="red" />
+        <circle id="red-base-4" cx="42em" cy="42em" r="3em" stroke="green" stroke-width="4" fill="red" />
+        <!-- BLUE HOME BASE -->
+        <circle id="blue-base-1" cx="6em" cy="34em" r="3em" stroke="green" stroke-width="4" fill="blue" />
+        <circle id="blue-base-2" cx="14em" cy="34em" r="3em" stroke="green" stroke-width="4" fill="blue" />
+        <circle id="blue-base-3" cx="6em" cy="42em" r="3em" stroke="green" stroke-width="4" fill="blue" />
+        <circle id="blue-base-4" cx="14em" cy="42em" r="3em" stroke="green" stroke-width="4" fill="blue" />
+        <!-- ROW AT YELLOW INNER -->
+        <rect id="field-1" width="3em" height="3em" stroke="black" fill="lightgray" x="1em" y="20em" />
+        <rect id="field-2" width="3em" height="3em" stroke="black" fill="lightgray" x="4.1em" y="20em" />
+        <rect id="yellow-start" width="2em" height="2em" fill="yellow" x="4.6em" y="20.5em" />
+        <rect id="field-3" width="3em" height="3em" stroke="black" fill="lightgray" x="7.2em" y="20em" />
+        <rect id="field-4" width="3em" height="3em" stroke="black" fill="lightgray" x="10.3em" y="20em" />
+        <rect id="field-5" width="3em" height="3em" stroke="black" fill="lightgray" x="13.4em" y="20em" />
+        <rect id="field-6" width="3em" height="3em" stroke="black" fill="lightgray" x="16.5em" y="20em" />
+
+        <!-- ROW AT YELLOW OUTER -->
+        <rect id="field-7" width="3em" height="3em" stroke="black" fill="lightgray" x="19.48em" y="17em" />
+        <rect id="field-8" width="3em" height="3em" stroke="black" fill="lightgray" x="19.48em" y="13.9em" />
+        <rect id="field-8" width="3em" height="3em" stroke="black" fill="lightgray" x="19.48em" y="13.9em" />
+        <rect id="field-9" width="3em" height="3em" stroke="black" fill="lightgray" x="19.48em" y="10.8em" />
+        <rect id="field-10" width="3em" height="3em" stroke="black" fill="lightgray" x="19.48em" y="7.7em" />
+        <rect id="field-11" width="3em" height="3em" stroke="black" fill="lightgray" x="19.48em" y="4.6em" />
+        <rect id="field-12" width="3em" height="3em" stroke="black" fill="lightgray" x="19.48em" y="1.5em" />
+        <!-- GREEN FINAL -->
+        <rect id="field-13" width="3em" height="3em" stroke="black" fill="lightgray" x="22.58em" y="1.5em" />
+        <rect id="green-final-1" width="3em" height="3em" stroke="black" fill="green" x="22.58em" y="4.6em" />
+        <rect id="green-final-2" width="3em" height="3em" stroke="black" fill="green" x="22.58em" y="7.7em" />
+        <rect id="green-final-3" width="3em" height="3em" stroke="black" fill="green" x="22.58em" y="10.8em" />
+        <rect id="green-final-4" width="3em" height="3em" stroke="black" fill="green" x="22.58em" y="13.9em" />
+        <rect id="green-final-5" width="3em" height="3em" stroke="black" fill="green" x="22.58em" y="17em" />
+        <rect id="green-home" width="3em" height="3em" x="22.58em" y="20em" stroke="black" fill="black" />
+        <!-- ROW AT GREEN INNER -->
+        <rect id="field-14" width="3em" height="3em" stroke="black" fill="lightgray" x="25.68em" y="1.5em" />
+        <rect id="field-15" width="3em" height="3em" stroke="black" fill="lightgray" x="25.68em" y="4.6em" />
+        <rect id="green-start" width="2em" height="2em" fill="green" x="26.18em" y="5.1em" />
+        <rect id="field-16" width="3em" height="3em" stroke="black" fill="lightgray" x="25.68em" y="7.7em" />
+        <rect id="field-17" width="3em" height="3em" stroke="black" fill="lightgray" x="25.68em" y="10.8em" />
+        <rect id="field-18" width="3em" height="3em" stroke="black" fill="lightgray" x="25.68em" y="13.9em" />
+        <rect id="field-19" width="3em" height="3em" stroke="black" fill="lightgray" x="25.68em" y="17em" />
+        <!-- ROW AT GREEN OUTER -->
+        <rect id="field-20" width="3em" height="3em" stroke="black" fill="lightgray" x="28.68em" y="20em" />
+        <rect id="field-21" width="3em" height="3em" stroke="black" fill="lightgray" x="31.78em" y="20em" />
+        <rect id="field-22" width="3em" height="3em" stroke="black" fill="lightgray" x="34.88em" y="20em" />
+        <rect id="field-23" width="3em" height="3em" stroke="black" fill="lightgray" x="37.98em" y="20em" />
+        <rect id="field-24" width="3em" height="3em" stroke="black" fill="lightgray" x="41.08em" y="20em" />
+        <rect id="field-25" width="3em" height="3em" stroke="black" fill="lightgray" x="44.18em" y="20em" />
+        <!-- RED FINAL -->
+        <rect id="field-26" width="3em" height="3em" stroke="black" fill="lightgray" x="44.18em" y="23.1em" />
+        <rect id="red-final-1" width="3em" height="3em" stroke="black" fill="red" x="41.08em" y="23.1em" />
+        <rect id="red-final-2" width="3em" height="3em" stroke="black" fill="red" x="37.98em" y="23.1em" />
+        <rect id="red-final-3" width="3em" height="3em" stroke="black" fill="red" x="34.88em" y="23.1em" />
+        <rect id="red-final-4" width="3em" height="3em" stroke="black" fill="red" x="31.78em" y="23.1em" />
+        <rect id="red-final-5" width="3em" height="3em" stroke="black" fill="red" x="28.68em" y="23.1em" />
+        <rect id="red-home" width="3em" height="3em" x="25.58em" y="23.1em" stroke="black" fill="black" />
+        <!-- ROW AT RED INNER -->
+        <rect id="field-27" width="3em" height="3em" stroke="black" fill="lightgray" x="44.18em" y="26.2em" />
+        <rect id="field-28" width="3em" height="3em" stroke="black" fill="lightgray" x="41.08em" y="26.2em" />
+        <rect id="red-start" width="2em" height="2em" fill="red" x="41.58em" y="26.7em" />
+        <rect id="field-29" width="3em" height="3em" stroke="black" fill="lightgray" x="37.98em" y="26.2em" />
+        <rect id="field-30" width="3em" height="3em" stroke="black" fill="lightgray" x="34.88em" y="26.2em" />
+        <rect id="field-31" width="3em" height="3em" stroke="black" fill="lightgray" x="31.78em" y="26.2em" />
+        <rect id="field-32" width="3em" height="3em" stroke="black" fill="lightgray" x="28.68em" y="26.2em" />
+        <!-- ROW AT RED OUTER -->
+        <rect id="field-33" width="3em" height="3em" stroke="black" fill="lightgray" x="25.68em" y="29.2em" />
+        <rect id="field-34" width="3em" height="3em" stroke="black" fill="lightgray" x="25.68em" y="32.3em" />
+        <rect id="field-35" width="3em" height="3em" stroke="black" fill="lightgray" x="25.68em" y="35.4em" />
+        <rect id="field-36" width="3em" height="3em" stroke="black" fill="lightgray" x="25.68em" y="38.5em" />
+        <rect id="field-37" width="3em" height="3em" stroke="black" fill="lightgray" x="25.68em" y="41.6em" />
+        <rect id="field-38" width="3em" height="3em" stroke="black" fill="lightgray" x="25.68em" y="44.7em" />
+        <!-- BLUE FINAL -->
+        <rect id="field-39" width="3em" height="3em" stroke="black" fill="lightgray" x="22.58em" y="44.7em" />
+        <rect id="blue-final-1" width="3em" height="3em" stroke="black" fill="blue" x="22.58em" y="41.6em" />
+        <rect id="blue-final-2" width="3em" height="3em" stroke="black" fill="blue" x="22.58em" y="38.5em" />
+        <rect id="blue-final-3" width="3em" height="3em" stroke="black" fill="blue" x="22.58em" y="35.4em" />
+        <rect id="blue-final-4" width="3em" height="3em" stroke="black" fill="blue" x="22.58em" y="32.3em" />
+        <rect id="blue-final-5" width="3em" height="3em" stroke="black" fill="blue" x="22.58em" y="29.2em" />
+        <rect id="blue-home" width="3em" height="3em" x="22.58em" y="26.2em" stroke="black" fill="black" />
+        <!-- ROW AT BLUE INNER -->
+        <rect id="field-40" width="3em" height="3em" stroke="black" fill="lightgray" x="19.48em" y="44.7em" />
+        <rect id="field-41" width="3em" height="3em" stroke="black" fill="lightgray" x="19.48em" y="41.6em" />
+        <rect id="blue-start" width="2em" height="2em" fill="blue" x="19.98em" y="42.2em" />
+        <rect id="field-42" width="3em" height="3em" stroke="black" fill="lightgray" x="19.48em" y="38.5em" />
+        <rect id="field-43" width="3em" height="3em" stroke="black" fill="lightgray" x="19.48em" y="35.4em" />
+        <rect id="field-44" width="3em" height="3em" stroke="black" fill="lightgray" x="19.48em" y="32.3em" />
+        <rect id="field-45" width="3em" height="3em" stroke="black" fill="lightgray" x="19.48em" y="29.2em" />
+        <!-- ROW AT BLUE OUTER -->
+        <rect id="field-46" width="3em" height="3em" stroke="black" fill="lightgray" x="1em" y="26.2em" />
+        <rect id="field-47" width="3em" height="3em" stroke="black" fill="lightgray" x="4.1em" y="26.2em" />
+        <rect id="field-48" width="3em" height="3em" stroke="black" fill="lightgray" x="7.2em" y="26.2em" />
+        <rect id="field-49" width="3em" height="3em" stroke="black" fill="lightgray" x="10.3em" y="26.2em" />
+        <rect id="field-50" width="3em" height="3em" stroke="black" fill="lightgray" x="13.4em" y="26.2em" />
+        <rect id="field-51" width="3em" height="3em" stroke="black" fill="lightgray" x="16.5em" y="26.2em" />
+        <!-- YELLOW FINAL -->
+        <rect id="field-52" width="3em" height="3em" stroke="black" fill="lightgray" x="1em" y="23.1em" />
+        <rect id="yellow-final-1" width="3em" height="3em" stroke="black" fill="yellow" x="4.1em" y="23.1em" />
+        <rect id="yellow-final-2" width="3em" height="3em" stroke="black" fill="yellow" x="7.2em" y="23.1em" />
+        <rect id="yellow-final-3" width="3em" height="3em" stroke="black" fill="yellow" x="10.3em" y="23.1em" />
+        <rect id="yellow-final-4" width="3em" height="3em" stroke="black" fill="yellow" x="13.4em" y="23.1em" />
+        <rect id="yellow-final-5" width="3em" height="3em" stroke="black" fill="yellow" x="16.5em" y="23.1em" />
+        <rect id="yellow-home" width="3em" height="3em" x="19.6em" y="23.1em" stroke="black" fill="black" />
+        <!-- Yellow players -->
+        <circle color="yellow" type="piece" id="yellow-1" cx="6em" cy="6em" r="1em" stroke="black" fill="yellow" />
+        <circle color="yellow" type="piece" id="yellow-2" cx="14em" cy="6em" r="1em" stroke="black" fill="yellow" />
+        <circle color="yellow" type="piece" id="yellow-3" cx="6em" cy="14em" r="1em" stroke="black" fill="yellow" />
+        <circle color="yellow" type="piece" id="yellow-4" cx="14em" cy="14em" r="1em" stroke="black" fill="yellow" />
+        <!-- Green players -->
+        <circle color="green" count="0" position="green-base-1" id="green-1" cx="34em" cy="6em" r="1em" stroke="black" fill="green" />
+        <circle color="green" count="0" position="green-base-2" id="green-2" cx="42em" cy="6em" r="1em" stroke="black" fill="green" />
+        <circle color="green" count="0" position="green-base-3" id="green-3" cx="34em" cy="14em" r="1em" stroke="black" fill="green" />
+        <circle color="green" count="0" position="green-base-4" id="green-4" cx="42em" cy="14em" r="1em" stroke="black" fill="green" />
+        <!-- Red players -->
+        <circle color="red" count="0" position="red-base-1" id="red-1" cx="34em" cy="34em" r="1em" stroke="black" fill="red" />
+        <circle color="red" count="0" position="red-base-2" id="red-2" cx="42em" cy="34em" r="1em" stroke="black" fill="red" />
+        <circle color="red" count="0" position="red-base-3" id="red-3" cx="34em" cy="42em" r="1em" stroke="black" fill="red" />
+        <circle color="red" count="0" position="red-base-4" id="red-4" cx="42em" cy="42em" r="1em" stroke="black" fill="red" />
+        <!-- Blue players -->
+        <circle color="blue" count="0" position="blue-base-1" id="blue-1" cx="6em" cy="34em" r="1em" stroke="black" fill="blue" />
+        <circle color="blue" count="0" position="blue-base-2" id="blue-2" cx="14em" cy="34em" r="1em" stroke="black" fill="blue" />
+        <circle color="blue" count="0" position="blue-base-3" id="blue-3" cx="6em" cy="42em" r="1em" stroke="black" fill="blue" />
+        <circle color="blue" count="0" position="blue-base-4" id="blue-4" cx="14em" cy="42em" r="1em" stroke="black" fill="blue" />
+      </svg>
+    </div>
+    <script src="js/vendor/jquery.js"></script>
+    <script src="js/vendor/foundation.min.js"></script>
+    <script src="js/app.js"></script>
+  </body>
+</html>
