@@ -64,10 +64,10 @@ Player.prototype.change = function() {
   var index = players.indexOf(activePlayer);
   activePlayer = (index == 3) ? players[0] : players[index+1];
   $("#showActivePlayer").html(activePlayer.color);
-  //dice.throwDice();
+  dice.throwDice();
 }
 
-// Set first player when starting
+// Setting start values
 var activePlayer = players[0];
 var dice = diceNumbers[5];
 
@@ -78,31 +78,23 @@ function Piece(position, count, cx, cy) {
   this.cy = cy;
 }
 Piece.prototype.move = function(ele) {
+
   if (this.position === activePlayer.color + "-base") { // Home base
 
     var field = $("#" + activePlayer.startField)[0];
-    var cx = parseInt(field.attributes.x.value.replace('em', ''));
-    var cy = parseInt(field.attributes.y.value.replace('em', ''));
     this.position = activePlayer.startField;
     this.count = 1;
-    $(ele).attr('cy', (cy+1.5)+"em");
-    $(ele).attr('cx', (cx+1.5)+"em");
 
   } else {
-
-    var pos = parseInt(this.position.split('-')[1]);
     var fieldsToMove = parseInt(dice.number);
     this.count += fieldsToMove;
-    if(this.count < 53) { // Ordinary run
-      var fieldNumber = pos+fieldsToMove;
-      if (fieldNumber < 53) {
-        var field = $("#field-" + fieldNumber)[0];
-      } else {
-        fieldNumber = fieldNumber-52;
-        var field = $("#field-" + (fieldNumber))[0];
-      }
+    if(this.count < 52) { // Ordinary run.
 
-    } else { // Final run - NOT FINISHED YET.
+      var fieldNumber = parseInt(this.position.split('-')[1])+fieldsToMove;
+      var field = (fieldNumber < 53) ? $("#field-" + fieldNumber)[0] ? $("#field-" + fieldNumber-52)[0];
+
+    } else { // Final run
+
       var fieldNumber = (this.count-51);
       if (fieldNumber < 6) {
         var field = $("#" + activePlayer.color + "-final-" + fieldNumber)[0];
@@ -111,18 +103,45 @@ Piece.prototype.move = function(ele) {
         var field = $('#' + activePlayer.color + '-home')[0];
       }
     }
-    var cx = parseInt(field.attributes.x.value.replace('em', ''));
-    newCx = this.cx = (cx+1.5)+"em";
-    var cy = parseInt(field.attributes.y.value.replace('em', ''));
-    newCy = this.cy = (cy+1.5)+"em";
-    $(ele).attr('cx', newCx);
-    $(ele).attr('cy', newCy);
     this.position = field.attributes.id.value;
   }
+
+  var cx = parseInt(field.attributes.x.value.replace('em', ''));
+  newCx = this.cx = (cx+1.5)+"em";
+  var cy = parseInt(field.attributes.y.value.replace('em', ''));
+  newCy = this.cy = (cy+1.5)+"em";
+
+  $(ele).attr('cx', newCx);
+  $(ele).attr('cy', newCy);
+
+  $("circle[type='piece']").each(function(index) {
+    var x = $(this).attr('cx');
+    var y = $(this).attr('cy');
+    if(newCx === x && newCy === y && $(this).attr('color') !== activePlayer.color) {
+      for(var i = 0; i < players.length;i++) {
+        if (players[i].color === $(this).attr('id').split('-')[0]) {
+          var pieceId = (parseInt($(this).attr('id').split('-')[1])-1);
+          players[i].pieces[pieceId].goHome($(this));
+        }
+      }
+    }
+  });
   activePlayer.change();
 }
+Piece.prototype.goHome = function(ele) {
 
-function Dice(textNumber, number) { // PERHAPS ALSO DOTS cx cy?
+  var number = $(ele).attr('id').replace($(ele).attr('color') + "-", '');
+  var homeCy = $("#" + $(ele).attr('color') + "-base-" + number).attr('cy');
+  var homeCx = $("#" + $(ele).attr('color') + "-base-" + number).attr('cx');
+  $(ele).attr('cy', homeCy);
+  $(ele).attr('cx', homeCx);
+
+  this.position = $(ele).attr('color') + "-base";
+  this.cy = homeCy;
+  this.cx = homeCx;
+}
+
+function Dice(textNumber, number) {
   this.textNumber = textNumber;
   this.number = number;
 }
