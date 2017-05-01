@@ -2,18 +2,29 @@
 LUDO
 
  - player
-  + color
-  + pieces
-  + startField
+  - color (yellow|green|red|blue)
+  - pieces (array)
+  - startField (field id)
+  + setName
+  + allPiecesAtHome (true|false)
 
  - piece
-  + position
-  + cx
-  + cy
+  - position (field id)
+  - count (how far is the piece on the board)
+  - cx (integer)
+  - cy (integer)
+  + moveOrdinary (new field attr)
+  + moveFromHome (startField attr)
+  + moveFinal (final field attr)
+  + goHome (home base field attr)
+  + setX (set the cx)
+  + setY (set the cy)
+  + setPosition (set the position)
 
  - dice
-  + number
+  - numbers (array)
+  + throwDice (integer)
 
  - diceNumber
-  + number
-  + textNumber
+  - number (integer)
+  - textNumber (name)
