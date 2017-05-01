@@ -1,5 +1,10 @@
 $(document).foundation()
 
+/*
+ CREATED BY LKH - 2017
+
+*/
+
 var yellowPieceOne = new Piece('yellow-base', 0, '6em', '6em');
 var yellowPieceTwo = new Piece('yellow-base', 0, '14em', '6em');
 var yellowPieceThree = new Piece('yellow-base', 0, '6em', '14em');
@@ -80,53 +85,64 @@ function Piece(position, count, cx, cy) {
 Piece.prototype.move = function(ele) {
 
   if (this.position === activePlayer.color + "-base") { // Home base
-
-    var field = $("#" + activePlayer.startField)[0];
-    this.position = activePlayer.startField;
-    this.count = 1;
-
+    var field = this.moveFromHome();
   } else {
     var fieldsToMove = parseInt(dice.number);
     this.count += fieldsToMove;
     if(this.count < 52) { // Ordinary run.
 
       var fieldNumber = parseInt(this.position.split('-')[1])+fieldsToMove;
-      var field = (fieldNumber < 53) ? $("#field-" + fieldNumber)[0] ? $("#field-" + fieldNumber-52)[0];
+      var field = (fieldNumber < 53) ? $("#field-" + fieldNumber)[0] : $("#field-" + (fieldNumber-52))[0];
 
     } else { // Final run
 
       var fieldNumber = (this.count-51);
-      if (fieldNumber < 6) {
-        var field = $("#" + activePlayer.color + "-final-" + fieldNumber)[0];
-      } else { // FINISHED
-        $(ele).attr('type', 'finished');
-        var field = $('#' + activePlayer.color + '-home')[0];
-      }
+      var field = (fieldNumber < 6) ? $("#" + activePlayer.color + "-final-" + fieldNumber)[0] :
+      $('#' + activePlayer.color + '-home')[0];
     }
     this.position = field.attributes.id.value;
   }
+  if (field !== false) {
+    var cx = parseInt(field.attributes.x.value.replace('em', ''));
+    newCx = this.cx = (cx+1.5)+"em";
+    var cy = parseInt(field.attributes.y.value.replace('em', ''));
+    newCy = this.cy = (cy+1.5)+"em";
 
-  var cx = parseInt(field.attributes.x.value.replace('em', ''));
-  newCx = this.cx = (cx+1.5)+"em";
-  var cy = parseInt(field.attributes.y.value.replace('em', ''));
-  newCy = this.cy = (cy+1.5)+"em";
+    $(ele).attr('cx', newCx);
+    $(ele).attr('cy', newCy);
 
-  $(ele).attr('cx', newCx);
-  $(ele).attr('cy', newCy);
-
-  $("circle[type='piece']").each(function(index) {
-    var x = $(this).attr('cx');
-    var y = $(this).attr('cy');
-    if(newCx === x && newCy === y && $(this).attr('color') !== activePlayer.color) {
-      for(var i = 0; i < players.length;i++) {
-        if (players[i].color === $(this).attr('id').split('-')[0]) {
-          var pieceId = (parseInt($(this).attr('id').split('-')[1])-1);
-          players[i].pieces[pieceId].goHome($(this));
+    $("circle[type='piece']").each(function(index) {
+      if(newCx === $(this).attr('cx')
+        && newCy === $(this).attr('cy')
+        && $(this).attr('color') !== activePlayer.color) {
+        for(var i = 0; i < players.length;i++) {
+          if (players[i].color === $(this).attr('id').split('-')[0]) {
+            var pieceId = (parseInt($(this).attr('id').split('-')[1])-1);
+            players[i].pieces[pieceId].goHome($(this));
+          }
         }
       }
+    });
+    countClick = 0;
+    activePlayer.change();
+  } else { // User is home
+    var allHome = true;
+    $("circle[type='piece']").each(function(index) {
+      for (var j = 0; j < activePlayer.pieces.length; j++) {
+        if (activePlayer.pieces[j].position != activePlayer.color + "-base") {
+          allHome = false;
+        }
+      }
+    });
+
+    if (allHome) { // All pieces are home - you get three attempts.
+      dice.throwDice();
+      countClick++;
+      if(countClick === 3) {
+        activePlayer.change();
+      }
     }
-  });
-  activePlayer.change();
+  }
 }
 Piece.prototype.goHome = function(ele) {
 
@@ -140,6 +156,21 @@ Piece.prototype.goHome = function(ele) {
   this.cy = homeCy;
   this.cx = homeCx;
 }
+Piece.prototype.moveFromHome = function() {
+
+  if (dice.number === 6) {
+    var field = $("#" + activePlayer.startField)[0];
+    this.position = activePlayer.startField;
+    this.count = 1;
+    return field;
+  } else {
+    return false;
+  }
+}
+
+
+
+
 
 function Dice(textNumber, number) {
   this.textNumber = textNumber;
@@ -161,6 +192,8 @@ Dice.prototype.throwDice = function() {
 
 
 $("#showActivePlayer").html(activePlayer.color);
+
+var countClick = 0;
 
 $("circle[type='piece']").click(function() {
   var pieceId = (parseInt($(this).attr('id').split('-')[1])-1);

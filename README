@@ -1,0 +1,19 @@
+
+LUDO
+
+ - player
+  + color
+  + pieces
+  + startField
+
+ - piece
+  + position
+  + cx
+  + cy
+
+ - dice
+  + number
+
+ - diceNumber
+  + number
+  + textNumber
