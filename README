@@ -6,20 +6,21 @@ LUDO
   - pieces (array)
   - startField (field id)
   + setName
-  + allPiecesAtHome (true|false)
+  V allPiecesAtHome (true|false)
+  V change
 
  - piece
   - position (field id)
   - count (how far is the piece on the board)
   - cx (integer)
   - cy (integer)
-  + moveOrdinary (new field attr)
-  + moveFromHome (startField attr)
-  + moveFinal (final field attr)
-  + goHome (home base field attr)
-  + setX (set the cx)
-  + setY (set the cy)
-  + setPosition (set the position)
+  V moveOrdinary (new field attr)
+  V moveFromHome (startField attr)
+  V moveFinal (final field attr)
+  V goHome (home base field attr)
+  V setX (set the cx)
+  V setY (set the cy)
+  V setPosition (set the position)
 
  - dice
   - numbers (array)

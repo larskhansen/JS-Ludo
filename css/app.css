@@ -1,3 +1,12 @@
+html, body {
+  font-family: tahoma, sans-serif;
+  font-size: 16px;
+}
+
 circle[type='piece'] {
   cursor: pointer;
+}
+
+.hide {
+  display: none;
 }
