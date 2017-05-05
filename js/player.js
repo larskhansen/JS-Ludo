@@ -1,3 +1,7 @@
+/*
+ CREATED BY LKH - 2017
+*/
+
 function Player(color, startField, pieces) {
   this.color = color;
   this.startField = startField;
@@ -16,13 +20,14 @@ Player.prototype.change = function() {
 }
 
 /**
- * Check if the all pieces are home or not.
+ * Check if the all pieces are home or finished.
  * @return bool
  */
-Player.prototype.allPiecesAtHome = function() {
+Player.prototype.hasNoActivePieces = function() {
   var returnValue = true;
   for (var i = 0; i < this.pieces.length; i++) {
-    if (this.pieces[i].position !== this.color + "-base") {
+    if (this.pieces[i].position !== this.color + "-base"
+      && this.pieces[i].position !== this.color + "-home") {
       returnValue = false;
     }
   }

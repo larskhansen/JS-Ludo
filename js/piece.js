@@ -1,9 +1,18 @@
+/*
+ CREATED BY LKH - 2017
+*/
+
 function Piece(position, count, cx, cy) {
   this.position = position;
   this.count = count;
   this.cx = cx;
   this.cy = cy;
 }
+
+/**
+ * The initial move function
+ * @var element
+ */
 Piece.prototype.move = function(ele) {
 
   if (this.position === activePlayer.color + "-base") { // Home base
@@ -45,7 +54,7 @@ Piece.prototype.move = function(ele) {
     countClick = 0;
     activePlayer.change();
   } else { // User is home
-    if (activePlayer.allPiecesAtHome()) { // All pieces are home - you get three attempts.
+    if (activePlayer.hasNoActivePieces()) { // All pieces are home - you get three attempts.
       dice.throwDice();
       countClick++;
       if(countClick === 3) {
@@ -54,6 +63,13 @@ Piece.prototype.move = function(ele) {
     }
   }
 }
+
+/**
+ * A piece has been sent home.
+ * This sets both the piece position, count and the X & Y.
+ *
+ * @var element.
+ */
 Piece.prototype.goHome = function(ele) {
 
   var number = $(ele).attr('id').replace($(ele).attr('color') + "-", '');
@@ -85,6 +101,7 @@ Piece.prototype.moveFromHome = function() {
 
 /**
  * Finds the next field for an ordinary turn.
+ * @var integer
  * @return field
  */
 Piece.prototype.moveOrdinary = function(fieldsToMove) {
@@ -98,13 +115,19 @@ Piece.prototype.moveOrdinary = function(fieldsToMove) {
  */
 Piece.prototype.moveFinal = function() {
   var fieldNumber = (this.count-51);
-  return (fieldNumber < 6) ?
+  var field = (fieldNumber < 6) ?
     $("#" + activePlayer.color + "-final-" + fieldNumber)[0] :
     $('#' + activePlayer.color + '-home')[0];
+  if (fieldNumber > 6) {
+    this.position = 'finished';
+  }
+  return field;
 }
 
 /**
  * Set the X for the piece and html element
+ * @var x
+ * @var element
  * @return this
  */
 Piece.prototype.setCx = function(cx, ele) {
@@ -115,6 +138,8 @@ Piece.prototype.setCx = function(cx, ele) {
 
 /**
  * Set the Y for the piece and html element
+ * @var y
+ * @var element
  * @return this
  */
 Piece.prototype.setCy = function(cy, ele) {

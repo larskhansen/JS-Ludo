@@ -1,7 +1,15 @@
+/*
+ CREATED BY LKH - 2017
+*/
+
 function Dice(textNumber, number) {
   this.textNumber = textNumber;
   this.number = number;
 }
+
+/**
+ * Throwing the dice.
+ */
 Dice.prototype.throwDice = function() {
   dice = diceNumbers[Math.floor(Math.random()*diceNumbers.length)];
 
