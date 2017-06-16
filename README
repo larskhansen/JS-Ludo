@@ -1,31 +1,25 @@
 
-LUDO
+Dice
 
- - player
-  - color (yellow|green|red|blue)
-  - pieces (array)
-  - startField (field id)
-  + setName
-  V allPiecesAtHome (true|false)
-  V change
+  - throw.
 
- - piece
-  - position (field id)
-  - count (how far is the piece on the board)
-  - cx (integer)
-  - cy (integer)
-  V moveOrdinary (new field attr)
-  V moveFromHome (startField attr)
-  V moveFinal (final field attr)
-  V goHome (home base field attr)
-  V setX (set the cx)
-  V setY (set the cy)
-  V setPosition (set the position)
+  - hasBeenThrown.
 
- - dice
-  - numbers (array)
-  + throwDice (integer)
+Player
 
- - diceNumber
-  - number (integer)
-  - textNumber (name)
+ - changePlayer.
+
+ - hasThrownDice.
+ - hasMovedPiece.
+ - hasActivePieces.
+
+Piece
+
+ - move.
+ - goHome.
+ - goFinal.
+ - goBase.
+
+ - hasBeenMoved.
+ -
+ -

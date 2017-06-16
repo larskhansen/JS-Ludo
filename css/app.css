@@ -10,3 +10,17 @@ circle[type='piece'] {
 .hide {
   display: none;
 }
+
+#diceButton {
+  cursor: pointer;
+  margin-top: -1rem;
+  vertical-align: text-top;
+}
+
+#diceButton.ready {
+  background-color:#00FF00;
+}
+
+#diceButton.busy {
+  background-color:#FF0000;
+}

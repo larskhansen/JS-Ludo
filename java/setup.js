@@ -1,3 +1,9 @@
+/*
+ *
+ * SETTING UP THE GAME
+ *
+ */
+
 var yellowPieceOne = new Piece('yellow-base', 0, '6em', '6em');
 var yellowPieceTwo = new Piece('yellow-base', 0, '14em', '6em');
 var yellowPieceThree = new Piece('yellow-base', 0, '6em', '14em');
@@ -6,7 +12,6 @@ var yellowPieceFour = new Piece('yellow-base', 0, '14em', '14em');
 var yellow = new Player(
   'yellow',
   'field-2', [yellowPieceOne, yellowPieceTwo, yellowPieceThree, yellowPieceFour],
-  false,
   3
 );
 
@@ -18,7 +23,6 @@ var greenPieceFour = new Piece('green-base', 0, '42em', '14em');
 var green = new Player(
   'green',
   'field-15', [greenPieceOne, greenPieceTwo, greenPieceThree, greenPieceFour],
-  false,
   3
 );
 
@@ -30,7 +34,6 @@ var redPieceFour = new Piece('red-base', 0, '42em', '42em');
 var red = new Player(
   'red',
   'field-28', [redPieceOne, redPieceTwo, redPieceThree, redPieceFour],
-  false,
   3
 );
 
@@ -42,26 +45,29 @@ var bluePieceFour = new Piece('blue-base', 0, '14em', '42em');
 var blue = new Player(
   'blue',
   'field-41', [bluePieceOne, bluePieceTwo, bluePieceThree, bluePieceFour],
-  false,
   3
 );
 
 var players = [yellow, green, red, blue];
+var activePlayer = players[0];
 
-var one = new Dice('one', 1);
-var two = new Dice('two', 2);
-var three = new Dice('three', 3);
-var four = new Dice('four', 4);
-var five = new Dice('five', 5);
-var six = new Dice('six', 6);
+var one = new Number('one', 1);
+var two = new Number('two', 2);
+var three = new Number('three', 3);
+var four = new Number('four', 4);
+var five = new Number('five', 5);
+var six = new Number('six', 6);
 
 var diceNumbers = [one, two, three, four, five, six];
 
 // Setting start values
-var activePlayer = players[0];
-var dice = diceNumbers[5];
-var activePiece = activePlayer.pieces[0];
-var attemptsLeft = 0;
-var movesLeft = 0;
 
+var dice = new Dice([one, two, three, four, five, six], 0, false);
+
+/*
+ * Global vars used in different files.
+ */
+
+// Count how many times the dice has rolled.
 var numberOfDiceRolls = 0;
+var numberOfPieceMoves = 0;

@@ -1,30 +1,32 @@
 <!doctype html>
 <html class="no-js" lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ludo</title>
-    <link rel="stylesheet" href="css/app.css">
-  </head>
-  <body>
-    <div class="row">
-      <div class="small-12 columns">
-        <h1>Ludo</h1>
-        <p>Dette er under opbygning...</p>
-        <ul>
-          <li>Mangler at man skal kunne vælge antal spillere</li>
-          <li>Designet skal friskes lidt op</li>
-          <li>Mangler en del af ludo <a target="_blank" href="http://www.papskubber.dk/braetspil/ludo">reglerne</a></li>
-          <li>Bl.a.: "<i>Du må ikke hoppe over egne brikker, men gerne modstanderens brikker.</i>"</li>
-          <li> og "<i>Lander man på et felt, hvor der står en modstanders brik, bliver denne slået tilbage til startfelterne. Står der to eller flere af modstanderens brikker, er det dog din brik, der bliver slået tilbage.</i>"</li>
-        </ul>
-        <p>Aktiv spiller: <span id="showActivePlayer"></span></p>
-      </div>
-      &nbsp;<svg id="diceSvg" width="4em" height="4em">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ludo</title>
+  <link rel="stylesheet" href="css/app.css">
+</head>
+
+<body>
+  <div class="row">
+    <div class="small-6 columns">
+      <h1>Ludo</h1>
+      <p>Dette er under opbygning...</p>
+      <ul>
+        <li>Mangler at man skal kunne vælge antal spillere</li>
+        <li>Designet skal friskes lidt op</li>
+        <li>Mangler en del af ludo <a target="_blank" href="http://www.papskubber.dk/braetspil/ludo">reglerne</a></li>
+        <li>Bl.a.: "<i>Du må ikke hoppe over egne brikker, men gerne modstanderens brikker.</i>"</li>
+        <li> og "<i>Lander man på et felt, hvor der står en modstanders brik, bliver denne slået tilbage til startfelterne. Står der to eller flere af modstanderens brikker, er det dog din brik, der bliver slået tilbage.</i>"</li>
+      </ul>
+      <p>Aktiv spiller: <span id="showActivePlayer"></span><br />Forsøg tilbage: <span id="attemptsLeft"></span></p>
+    </div>
+    &nbsp;<svg id="diceSvg" width="4em" height="4em">
         <rect id="dice" width="4em" height="4em" stroke="black" fill="lightgray" />
         <!-- ONE -->
-        <circle dice="one" class="hide" id="one-one" cx="2em" cy="2em" r="0.4em" stroke="black" fill="black" />
+        <circle dice="one" class="" id="one-one" cx="2em" cy="2em" r="0.4em" stroke="black" fill="black" />
         <!-- TWO -->
         <circle dice="two" class="hide" id="two-one" cx="1.5em" cy="1.5em" r="0.4em" stroke="black" fill="black" />
         <circle dice="two" class="hide" id="two-two" cx="2.5em" cy="2.5em" r="0.4em" stroke="black" fill="black" />
@@ -44,15 +46,15 @@
         <circle dice="five" class="hide" id="five-four" cx="3em" cy="3em" r="0.4em" stroke="black" fill="black" />
         <circle dice="five" class="hide" id="five-five" cx="2em" cy="2em" r="0.4em" stroke="black" fill="black" />
         <!-- SIX -->
-          <circle dice="six" id="six-one" cx="1em" cy="1em" r="0.4em" stroke="black" fill="black" />
-          <circle dice="six" id="six-two" cx="3em" cy="1em" r="0.4em" stroke="black" fill="black" />
-          <circle dice="six" id="six-three" cx="1em" cy="2em" r="0.4em" stroke="black" fill="black" />
-          <circle dice="six" id="six-four" cx="3em" cy="2em" r="0.4em" stroke="black" fill="black" />
-          <circle dice="six" id="six-five" cx="1em" cy="3em" r="0.4em" stroke="black" fill="black" />
-          <circle dice="six" id="six-six" cx="3em" cy="3em" r="0.4em" stroke="black" fill="black" />
-      </svg>
-      <br />
-      <svg width="60em" height="60em">
+          <circle dice="six" class="hide" id="six-one" cx="1em" cy="1em" r="0.4em" stroke="black" fill="black" />
+          <circle dice="six" class="hide" id="six-two" cx="3em" cy="1em" r="0.4em" stroke="black" fill="black" />
+          <circle dice="six" class="hide" id="six-three" cx="1em" cy="2em" r="0.4em" stroke="black" fill="black" />
+          <circle dice="six" class="hide" id="six-four" cx="3em" cy="2em" r="0.4em" stroke="black" fill="black" />
+          <circle dice="six" class="hide" id="six-five" cx="1em" cy="3em" r="0.4em" stroke="black" fill="black" />
+          <circle dice="six" class="hide" id="six-six" cx="3em" cy="3em" r="0.4em" stroke="black" fill="black" />
+      </svg>&nbsp;<button id="diceButton" class="ready" type="button">Kast terning</button>
+    <br />
+    <svg width="60em" height="60em">
         <rect width="48em" height="49em" stroke="blue" fill="black"
        fill-opacity="0.5" stroke-opacity="0.8"/>
         <!-- YELLOW HOME BASE -->
@@ -188,12 +190,13 @@
         <circle color="blue" type="piece" id="blue-3" cx="6em" cy="42em" r="1em" stroke="black" fill="blue" />
         <circle color="blue" type="piece" id="blue-4" cx="14em" cy="42em" r="1em" stroke="black" fill="blue" />
       </svg>
-    </div>
-    <script src="js/vendor/jquery.js"></script>
-    <script src="js/player.js"></script>
-    <script src="js/piece.js"></script>
-    <script src="js/dice.js"></script>
-    <script src="js/setup.js"></script>
-    <script src="js/app.js"></script>
-  </body>
+  </div>
+  <script src="js/vendor/jquery.js"></script>
+  <script src="java/player.js"></script>
+  <script src="java/piece.js"></script>
+  <script src="java/dice.js"></script>
+  <script src="java/setup.js"></script>
+  <script src="java/app.js"></script>
+</body>
+
 </html>
