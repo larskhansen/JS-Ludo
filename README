@@ -1,25 +1,3 @@
+This is a little hobby project.
 
-Dice
-
-  - throw.
-
-  - hasBeenThrown.
-
-Player
-
- - changePlayer.
-
- - hasThrownDice.
- - hasMovedPiece.
- - hasActivePieces.
-
-Piece
-
- - move.
- - goHome.
- - goFinal.
- - goBase.
-
- - hasBeenMoved.
- -
- -
+Made in HTML5 and javascript.
