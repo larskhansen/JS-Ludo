@@ -21,7 +21,11 @@ Piece.prototype.move = function (id) {
     this.moveFromHome();
   } else if (this.position.includes('base') === false &&
     this.position.includes('final') === false) {
-    this.moveOrdinary();
+    if (this.count+dice.activeNumber.number > 51) {
+      this.moveFinal();
+    } else {
+      this.moveOrdinary();
+    }
   } else if (this.position.includes('final') === true) {
     this.moveFinal();
   } else {
@@ -38,7 +42,7 @@ Piece.prototype.move = function (id) {
 Piece.prototype.moveFromHome = function () {
   var field = $("#" + activePlayer.startField)[0];
   activePlayer.attemptsLeft = 0;
-  //this.position = activePlayer.startField;
+  this.position = activePlayer.startField;
   this.count = 1;
   this.moveThePiece(field, "notHome");
 };
@@ -49,11 +53,13 @@ Piece.prototype.moveFromHome = function () {
  * @return field
  */
 Piece.prototype.moveOrdinary = function () {
+
   var fieldNumber = parseInt(this.position.split('-')[1]) + dice.activeNumber.number;
   var newField = (fieldNumber < 53) ?
     $("#field-" + fieldNumber)[0] :
     $("#field-" + (fieldNumber - 52))[0];
 
+  this.count += dice.activeNumber.number;
   this.moveThePiece(newField, "notHome");
 };
 
@@ -62,7 +68,7 @@ Piece.prototype.moveOrdinary = function () {
  * @return field
  */
 Piece.prototype.moveFinal = function () {
-  var fieldNumber = (this.count - 51);
+  var fieldNumber = (51 - this.count);
   var field = (fieldNumber < 6) ?
     $("#" + activePlayer.color + "-final-" + fieldNumber)[0] :
     $('#' + activePlayer.color + '-home')[0];
