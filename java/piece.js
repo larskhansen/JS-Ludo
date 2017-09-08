@@ -21,7 +21,11 @@ Piece.prototype.move = function (id) {
     this.moveFromHome();
   } else if (this.position.includes('base') === false &&
     this.position.includes('final') === false) {
-    this.moveOrdinary();
+    if (this.count+dice.activeNumber.number > 51) {
+      this.moveFinal();
+    } else {
+      this.moveOrdinary();
+    }
   } else if (this.position.includes('final') === true) {
     this.moveFinal();
   } else {
@@ -38,7 +42,6 @@ Piece.prototype.move = function (id) {
 Piece.prototype.moveFromHome = function () {
   var field = $("#" + activePlayer.startField)[0];
   activePlayer.attemptsLeft = 0;
-  //this.position = activePlayer.startField;
   this.count = 1;
   this.moveThePiece(field, "notHome");
 };
@@ -49,11 +52,13 @@ Piece.prototype.moveFromHome = function () {
  * @return field
  */
 Piece.prototype.moveOrdinary = function () {
+
   var fieldNumber = parseInt(this.position.split('-')[1]) + dice.activeNumber.number;
   var newField = (fieldNumber < 53) ?
     $("#field-" + fieldNumber)[0] :
     $("#field-" + (fieldNumber - 52))[0];
 
+  this.count += dice.activeNumber.number;
   this.moveThePiece(newField, "notHome");
 };
 
@@ -62,21 +67,20 @@ Piece.prototype.moveOrdinary = function () {
  * @return field
  */
 Piece.prototype.moveFinal = function () {
-  var fieldNumber = (this.count - 51);
+
+  var fieldNumber = (this.count+dice.activeNumber.number)-51;
+
   var field = (fieldNumber < 6) ?
     $("#" + activePlayer.color + "-final-" + fieldNumber)[0] :
     $('#' + activePlayer.color + '-home')[0];
-  if (fieldNumber > 6) {
-    this.position = 'finished';
-  }
-  return field;
+  this.count += dice.activeNumber.number;
+  this.moveThePiece(field, "notHome");
 };
 
 Piece.prototype.goHome = function (color, place) {
 
   var homeBase = document.getElementById(color + "-base-" + place);
 
-  this.position = color + "-base";
   this.count = 0;
   this.moveThePiece(homeBase, "home");
 };
@@ -144,20 +148,28 @@ Piece.prototype.moveThePiece = function (field, typeOfMovement) {
     }
   }
 
-  if (dice.activeNumber.number !== 6) {
-    //The user has moved and will lose its turn
-    activePlayer.changePlayer();
-  } else {
-    // The user has thrown a 6 and gets another try.
-    activePlayer.attemptsLeft = 1;
-    $("#attemptsLeft").html(activePlayer.attemptsLeft);
+  if (typeOfMovement !== "home") {
+    if (dice.activeNumber.number !== 6) {
+      //The user has moved and will lose its turn
+      activePlayer.changePlayer();
+    } else {
+      // The user has thrown a 6 and gets another try.
+      activePlayer.attemptsLeft = 1;
+      $("#attemptsLeft").html(activePlayer.attemptsLeft);
+    }
+    $("#diceButton").removeClass('busy').addClass('ready');
+    dice.thrown = false;
   }
-  $("#diceButton").removeClass('busy').addClass('ready');
-  dice.thrown = false;
 };
 
 Piece.prototype.setXandY = function (field) {
-  this.position = field.attributes.id.value.replace('id=', '').replace('"', '');
+  if (field.attributes.id.value.indexOf('base') !== -1) {
+    this.position = field.attributes.id.value.substring(
+      0, field.attributes.id.value.length-2
+    );
+  } else {
+    this.position = field.attributes.id.value.replace('id=', '').replace('"', '');
+  }
   this.setCy();
   this.setCx();
 };
