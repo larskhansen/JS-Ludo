@@ -68,14 +68,17 @@ Piece.prototype.moveOrdinary = function () {
  * @return field
  */
 Piece.prototype.moveFinal = function () {
-  var fieldNumber = (51 - this.count);
+
+  var fieldNumber = (this.count+dice.activeNumber.number)-51;
+
   var field = (fieldNumber < 6) ?
     $("#" + activePlayer.color + "-final-" + fieldNumber)[0] :
     $('#' + activePlayer.color + '-home')[0];
   if (fieldNumber > 6) {
     this.position = 'finished';
   }
-  return field;
+  this.count += dice.activeNumber.number;
+  this.moveThePiece(field, "notHome");
 };
 
 Piece.prototype.goHome = function (color, place) {

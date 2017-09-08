@@ -52,7 +52,7 @@ Dice.prototype.throwIt = function () {
   } else {
     alert('Ikke flere forsøg tilbage. Flyt en brik');
   }
-}
+};
 
 function changeDice() {
   $('#diceSvg circle').each(function () {
