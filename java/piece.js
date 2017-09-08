@@ -42,7 +42,6 @@ Piece.prototype.move = function (id) {
 Piece.prototype.moveFromHome = function () {
   var field = $("#" + activePlayer.startField)[0];
   activePlayer.attemptsLeft = 0;
-  this.position = activePlayer.startField;
   this.count = 1;
   this.moveThePiece(field, "notHome");
 };
@@ -74,9 +73,6 @@ Piece.prototype.moveFinal = function () {
   var field = (fieldNumber < 6) ?
     $("#" + activePlayer.color + "-final-" + fieldNumber)[0] :
     $('#' + activePlayer.color + '-home')[0];
-  if (fieldNumber > 6) {
-    this.position = 'finished';
-  }
   this.count += dice.activeNumber.number;
   this.moveThePiece(field, "notHome");
 };
@@ -85,7 +81,6 @@ Piece.prototype.goHome = function (color, place) {
 
   var homeBase = document.getElementById(color + "-base-" + place);
 
-  this.position = color + "-base";
   this.count = 0;
   this.moveThePiece(homeBase, "home");
 };
@@ -153,20 +148,28 @@ Piece.prototype.moveThePiece = function (field, typeOfMovement) {
     }
   }
 
-  if (dice.activeNumber.number !== 6) {
-    //The user has moved and will lose its turn
-    activePlayer.changePlayer();
-  } else {
-    // The user has thrown a 6 and gets another try.
-    activePlayer.attemptsLeft = 1;
-    $("#attemptsLeft").html(activePlayer.attemptsLeft);
+  if (typeOfMovement !== "home") {
+    if (dice.activeNumber.number !== 6) {
+      //The user has moved and will lose its turn
+      activePlayer.changePlayer();
+    } else {
+      // The user has thrown a 6 and gets another try.
+      activePlayer.attemptsLeft = 1;
+      $("#attemptsLeft").html(activePlayer.attemptsLeft);
+    }
+    $("#diceButton").removeClass('busy').addClass('ready');
+    dice.thrown = false;
   }
-  $("#diceButton").removeClass('busy').addClass('ready');
-  dice.thrown = false;
 };
 
 Piece.prototype.setXandY = function (field) {
-  this.position = field.attributes.id.value.replace('id=', '').replace('"', '');
+  if (field.attributes.id.value.indexOf('base') !== -1) {
+    this.position = field.attributes.id.value.substring(
+      0, field.attributes.id.value.length-2
+    );
+  } else {
+    this.position = field.attributes.id.value.replace('id=', '').replace('"', '');
+  }
   this.setCy();
   this.setCx();
 };
