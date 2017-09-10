@@ -59,7 +59,7 @@ Piece.prototype.moveOrdinary = function () {
     this.count += 1;
     this.moveThePiece(newField, "notHome");
   } else {
-    // All done.
+    finalAction("notHome");
   }
   */
 
@@ -90,7 +90,7 @@ Piece.prototype.moveFinal = function () {
     this.moveThePiece(field, "notHome");
     // Call the moveThePiece
   } else {
-    // All done.
+    finalAction("notHome");
   }
   */
   fieldNumber = (this.count + dice.activeNumber.number) - 51;
@@ -108,6 +108,7 @@ Piece.prototype.goHome = function (color, place) {
 
   this.count = 0;
   this.moveThePiece(homeBase, "home");
+  finalAction("home");
 };
 
 Piece.prototype.moveThePiece = function (field, typeOfMovement) {
@@ -151,20 +152,7 @@ Piece.prototype.moveThePiece = function (field, typeOfMovement) {
       }
     }
   }
-
-  // Last changes when final movement done.
-  if (typeOfMovement !== "home") {
-    if (dice.activeNumber.number !== 6) {
-      //The user has moved and will lose its turn
-      activePlayer.changePlayer();
-    } else {
-      // The user has thrown a 6 and gets another try.
-      activePlayer.attemptsLeft = 1;
-      $("#attemptsLeft").html(activePlayer.attemptsLeft);
-    }
-    $("#diceButton").removeClass('busy').addClass('ready');
-    dice.thrown = false;
-  }
+  finalAction(typeOfMovement);
 };
 
 Piece.prototype.setXandY = function (field) {
@@ -180,3 +168,19 @@ Piece.prototype.setXandY = function (field) {
   // SET THE CX
   $("#" + this.id).attr('cx', this.cx);
 };
+
+function finalAction(typeOfMovement) {
+  // Last changes when final movement done.
+  if (typeOfMovement !== "home") {
+    if (dice.activeNumber.number !== 6) {
+      //The user has moved and will lose its turn
+      activePlayer.changePlayer();
+    } else {
+      // The user has thrown a 6 and gets another try.
+      activePlayer.attemptsLeft = 1;
+      $("#attemptsLeft").html(activePlayer.attemptsLeft);
+    }
+    $("#diceButton").removeClass('busy').addClass('ready');
+    dice.thrown = false;
+  }
+}
