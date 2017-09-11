@@ -19,19 +19,13 @@ Piece.prototype.move = function (id) {
   // The piece is at home and dice is six
   if (this.count === 0 && dice.activeNumber.number === 6) {
     this.moveFromHome();
-  } else if (this.position.includes('base') === false &&
-    this.position.includes('final') === false) {
-    if (this.count+dice.activeNumber.number > 51) {
-      this.moveFinal();
-    } else {
-      this.moveOrdinary();
-    }
-  } else if (this.position.includes('final') === true) {
+  } else if (this.count + dice.activeNumber.number > 51) { // dice.activeNumber.number must be removed when window.setTimeout() is used.
     this.moveFinal();
+  } else if (this.count + dice.activeNumber.number < 52 && this.count > 0) { // dice.activeNumber.number must be removed when window.setTimeout() is used.
+    this.moveOrdinary();
   } else {
     alert('Denne brik kan vist ikke flyttes?');
   }
-
 };
 
 /**
@@ -44,6 +38,7 @@ Piece.prototype.moveFromHome = function () {
   activePlayer.attemptsLeft = 0;
   this.count = 1;
   this.moveThePiece(field, "notHome");
+  finalAction("notHome");
 };
 
 /**
@@ -53,13 +48,23 @@ Piece.prototype.moveFromHome = function () {
  */
 Piece.prototype.moveOrdinary = function () {
 
-  var fieldNumber = parseInt(this.position.split('-')[1]) + dice.activeNumber.number;
-  var newField = (fieldNumber < 53) ?
-    $("#field-" + fieldNumber)[0] :
-    $("#field-" + (fieldNumber - 52))[0];
+  var fieldNumber = 0;
 
-  this.count += dice.activeNumber.number;
-  this.moveThePiece(newField, "notHome");
+  // moveThePiece must be called with window.setTimeout() function
+  if (movesLeft < dice.activeNumber.number) {
+    movesLeft += 1;
+    fieldNumber = parseInt(this.position.split('-')[1]) + 1;
+    var newField = (fieldNumber < 53) ?
+      $("#field-" + fieldNumber)[0] :
+      $("#field-" + (fieldNumber - 52))[0];
+    this.count += 1;
+    this.moveThePiece(newField, "notHome");
+
+    window.setTimeout(clickPiece, 150 * movesLeft, this.id);
+  } else {
+    movesLeft = 0;
+    finalAction("notHome");
+  }
 };
 
 /**
@@ -68,13 +73,22 @@ Piece.prototype.moveOrdinary = function () {
  */
 Piece.prototype.moveFinal = function () {
 
-  var fieldNumber = (this.count+dice.activeNumber.number)-51;
-
-  var field = (fieldNumber < 6) ?
-    $("#" + activePlayer.color + "-final-" + fieldNumber)[0] :
-    $('#' + activePlayer.color + '-home')[0];
-  this.count += dice.activeNumber.number;
-  this.moveThePiece(field, "notHome");
+  var fieldNumber = 0;
+  // moveThePiece must be called with window.setTimeout() function
+  if (movesLeft < dice.activeNumber.number) {
+    movesLeft += 1;
+    fieldNumber = (this.count + 1) - 51;
+    var newField = (fieldNumber < 6) ?
+      $("#" + activePlayer.color + "-final-" + fieldNumber)[0] :
+      $('#' + activePlayer.color + '-home')[0];
+    this.count += 1;
+    this.moveThePiece(newField, "notHome");
+    window.setTimeout(clickPiece, 150 * movesLeft, this.id);
+    // Call the moveThePiece
+  } else {
+    movesLeft = 0;
+    finalAction("notHome");
+  }
 };
 
 Piece.prototype.goHome = function (color, place) {
@@ -83,26 +97,7 @@ Piece.prototype.goHome = function (color, place) {
 
   this.count = 0;
   this.moveThePiece(homeBase, "home");
-};
-
-/**
- * Set the X for the piece and html element
- * @var x
- * @var element
- * @return this
- */
-Piece.prototype.setCx = function () {
-  $("#" + this.id).attr('cx', this.cx);
-};
-
-/**
- * Set the Y for the piece and html element
- * @var y
- * @var element
- * @return this
- */
-Piece.prototype.setCy = function () {
-  $("#" + this.id).attr('cy', this.cy);
+  finalAction("home");
 };
 
 Piece.prototype.moveThePiece = function (field, typeOfMovement) {
@@ -120,17 +115,16 @@ Piece.prototype.moveThePiece = function (field, typeOfMovement) {
   this.cx = cx + "em";
   this.cy = cy + "em";
 
-  numberOfPieceMoves = numberOfPieceMoves + 1;
-
   this.setXandY(field);
+
+  // ** // ** // ** // ** // ** // ** // ** // ** // ** // ** // ** // ** //
 
   // Check if piece hits an opponent or own piece.
   var pieces = document.querySelectorAll("circle[type='piece']");
-
   for (var i = 0; i < pieces.length; i++) {
-    if (this.cx === pieces[i].attributes.cx.value
-        && this.cy === pieces[i].attributes.cy.value) {
-      if (pieces[i].attributes.color.value !== this.id.split('-')[0]) { // Opponent
+    if (this.cx === pieces[i].attributes.cx.value &&
+      this.cy === pieces[i].attributes.cy.value) {
+      if (pieces[i].attributes.color.value !== this.id.split('-')[0]) { // Opponent. Only run this on last movement.
         for (var j = 0; j < players.length; j++) {
           if (players[j].color === pieces[i].attributes.color.value) { // Fetching correct player color
             var pieceId = (parseInt(pieces[i].attributes.id.value.split('-')[1]) - 1);
@@ -140,14 +134,36 @@ Piece.prototype.moveThePiece = function (field, typeOfMovement) {
             );
           }
         }
-      } else if (activePlayer.color === pieces[i].attributes.color.value
-          && this.id !== pieces[i].attributes.id.value) {
-        // Own piece. Cannot jump over.
+      } else if (activePlayer.color === pieces[i].attributes.color.value &&
+        this.id !== pieces[i].attributes.id.value) {
+        // Own piece. Cannot jump over. Each movement.
         console.log('her');
       }
     }
   }
+  //finalAction(typeOfMovement);
+};
 
+Piece.prototype.setXandY = function (field) {
+  if (field.attributes.id.value.indexOf('base') !== -1) {
+    this.position = field.attributes.id.value.substring(
+      0, field.attributes.id.value.length - 2
+    );
+  } else {
+    this.position = field.attributes.id.value.replace('id=', '').replace('"', '');
+  }
+  // SET THE CY
+  $("#" + this.id).attr('cy', this.cy);
+  // SET THE CX
+  $("#" + this.id).attr('cx', this.cx);
+};
+
+function clickPiece(id) {
+  $("#" + id).click();
+}
+
+function finalAction(typeOfMovement) {
+  // Last changes when final movement done.
   if (typeOfMovement !== "home") {
     if (dice.activeNumber.number !== 6) {
       //The user has moved and will lose its turn
@@ -160,16 +176,4 @@ Piece.prototype.moveThePiece = function (field, typeOfMovement) {
     $("#diceButton").removeClass('busy').addClass('ready');
     dice.thrown = false;
   }
-};
-
-Piece.prototype.setXandY = function (field) {
-  if (field.attributes.id.value.indexOf('base') !== -1) {
-    this.position = field.attributes.id.value.substring(
-      0, field.attributes.id.value.length-2
-    );
-  } else {
-    this.position = field.attributes.id.value.replace('id=', '').replace('"', '');
-  }
-  this.setCy();
-  this.setCx();
-};
+}

@@ -54,6 +54,9 @@ Dice.prototype.throwIt = function () {
   }
 };
 
+/**
+ *
+ */
 function changeDice() {
   $('#diceSvg circle').each(function () {
     $(this).addClass('hide');
