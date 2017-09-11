@@ -38,6 +38,7 @@ Piece.prototype.moveFromHome = function () {
   activePlayer.attemptsLeft = 0;
   this.count = 1;
   this.moveThePiece(field, "notHome");
+  finalAction("notHome");
 };
 
 /**
@@ -49,7 +50,7 @@ Piece.prototype.moveOrdinary = function () {
 
   var fieldNumber = 0;
 
-  /* moveThePiece must be called with window.setTimeout() function
+  // moveThePiece must be called with window.setTimeout() function
   if (movesLeft < dice.activeNumber.number) {
     movesLeft += 1;
     fieldNumber = parseInt(this.position.split('-')[1]) + 1;
@@ -58,18 +59,12 @@ Piece.prototype.moveOrdinary = function () {
       $("#field-" + (fieldNumber - 52))[0];
     this.count += 1;
     this.moveThePiece(newField, "notHome");
+
+    window.setTimeout(clickPiece, 150 * movesLeft, this.id);
   } else {
+    movesLeft = 0;
     finalAction("notHome");
   }
-  */
-
-  fieldNumber = parseInt(this.position.split('-')[1]) + dice.activeNumber.number;
-  var newField = (fieldNumber < 53) ?
-    $("#field-" + fieldNumber)[0] :
-    $("#field-" + (fieldNumber - 52))[0];
-
-  this.count += dice.activeNumber.number;
-  this.moveThePiece(newField, "notHome");
 };
 
 /**
@@ -79,27 +74,21 @@ Piece.prototype.moveOrdinary = function () {
 Piece.prototype.moveFinal = function () {
 
   var fieldNumber = 0;
-  /* moveThePiece must be called with window.setTimeout() function
+  // moveThePiece must be called with window.setTimeout() function
   if (movesLeft < dice.activeNumber.number) {
     movesLeft += 1;
     fieldNumber = (this.count + 1) - 51;
-    var field = (fieldNumber < 6) ?
+    var newField = (fieldNumber < 6) ?
       $("#" + activePlayer.color + "-final-" + fieldNumber)[0] :
       $('#' + activePlayer.color + '-home')[0];
     this.count += 1;
-    this.moveThePiece(field, "notHome");
+    this.moveThePiece(newField, "notHome");
+    window.setTimeout(clickPiece, 150 * movesLeft, this.id);
     // Call the moveThePiece
   } else {
+    movesLeft = 0;
     finalAction("notHome");
   }
-  */
-  fieldNumber = (this.count + dice.activeNumber.number) - 51;
-
-  var field = (fieldNumber < 6) ?
-    $("#" + activePlayer.color + "-final-" + fieldNumber)[0] :
-    $('#' + activePlayer.color + '-home')[0];
-  this.count += dice.activeNumber.number;
-  this.moveThePiece(field, "notHome");
 };
 
 Piece.prototype.goHome = function (color, place) {
@@ -152,7 +141,7 @@ Piece.prototype.moveThePiece = function (field, typeOfMovement) {
       }
     }
   }
-  finalAction(typeOfMovement);
+  //finalAction(typeOfMovement);
 };
 
 Piece.prototype.setXandY = function (field) {
@@ -168,6 +157,10 @@ Piece.prototype.setXandY = function (field) {
   // SET THE CX
   $("#" + this.id).attr('cx', this.cx);
 };
+
+function clickPiece(id) {
+  $("#" + id).click();
+}
 
 function finalAction(typeOfMovement) {
   // Last changes when final movement done.
