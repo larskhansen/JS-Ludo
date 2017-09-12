@@ -16,12 +16,15 @@ function Piece(position, count, cx, cy) {
  */
 Piece.prototype.move = function (id) {
   this.id = id;
+
+  // THIS NEEDS TO BE CHANGED.
+
   // The piece is at home and dice is six
   if (this.count === 0 && dice.activeNumber.number === 6) {
     this.moveFromHome();
-  } else if (this.count + dice.activeNumber.number > 51) { // dice.activeNumber.number must be removed when window.setTimeout() is used.
+  } else if (this.count + 1 > 51) { // dice.activeNumber.number must be removed when window.setTimeout() is used.
     this.moveFinal();
-  } else if (this.count + dice.activeNumber.number < 52 && this.count > 0) { // dice.activeNumber.number must be removed when window.setTimeout() is used.
+  } else if (this.count + 1 < 52 && this.count > 0) { // dice.activeNumber.number must be removed when window.setTimeout() is used.
     this.moveOrdinary();
   } else {
     alert('Denne brik kan vist ikke flyttes?');
