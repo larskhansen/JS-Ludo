@@ -151,26 +151,17 @@ function Piece(position, count, cx, cy) {
   this.finalAction = function (typeOfMovement) {
     if (typeOfMovement !== "home") {
 
-      var cy = document.getElementById(this.id).attributes.cy.value;
-      var cx = document.getElementById(this.id).attributes.cx.value;
-
-      var pieces = document.querySelectorAll("circle[type='piece']");
-
-      /*
-      for (var i = 0; i < pieces.length; i++) {
-        if (pieces[i].attributes.color.value !== id.split('-')[0]) { // Opponent. Only run this on last movement.
-          if (pieces[i].attributes.cy.value === cy &&
-            pieces[i].attributes.cx.value === cx) {
-
-            players[j].pieces[pieceId].goHome(
-              pieces[i].attributes.color.value,
-              pieces[i].attributes.id.value.split('-')[1]
-            );
-
+      // This is not complete - if two pieces at a place are missing.
+      for (var i = 0; i < players.length; i++) {
+        if (players[i].color !== activePlayer.color) {
+          playerPieces = players[i].pieces;
+          for (var j = 0; j < playerPieces.length; j++) {
+            if (this.cx === playerPieces[j].cx && this.cy === playerPieces[j].cy) {
+              players[i].pieces[j].goHome(player[i].color, (j + 1));
+            }
           }
         }
       }
-      */
 
       if (dice.activeNumber.number !== 6) {
         //The user has moved and will lose its turn
