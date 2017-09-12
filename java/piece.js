@@ -22,11 +22,11 @@ Piece.prototype.move = function (id) {
   // The piece is at home and dice is six
   if (this.count === 0 && dice.activeNumber.number === 6) {
     this.moveFromHome();
-  } else if (this.count + 1 > 51) { // dice.activeNumber.number must be removed when window.setTimeout() is used.
+  } else if (this.count + 1 > 51) { // Final stretch.
     this.moveFinal();
-  } else if (this.count + 1 < 52 && this.count > 0) { // dice.activeNumber.number must be removed when window.setTimeout() is used.
+  } else if (this.count + 1 < 52 && this.count > 0) { // Ordinary movement.
     this.moveOrdinary();
-  } else {
+  } else { // If you try to move a piece "at home base" with a dice below six.
     alert('Denne brik kan vist ikke flyttes?');
   }
 };
