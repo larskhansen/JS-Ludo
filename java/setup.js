@@ -11,8 +11,7 @@ var yellowPieceFour = new Piece('yellow-base', 0, '14em', '14em');
 
 var yellow = new Player(
   'yellow',
-  'field-2',
-  [yellowPieceOne, yellowPieceTwo, yellowPieceThree, yellowPieceFour],
+  'field-2', [yellowPieceOne, yellowPieceTwo, yellowPieceThree, yellowPieceFour],
   3
 );
 
@@ -23,8 +22,7 @@ var greenPieceFour = new Piece('green-base', 0, '42em', '14em');
 
 var green = new Player(
   'green',
-  'field-15',
-  [greenPieceOne, greenPieceTwo, greenPieceThree, greenPieceFour],
+  'field-15', [greenPieceOne, greenPieceTwo, greenPieceThree, greenPieceFour],
   3
 );
 
@@ -35,8 +33,7 @@ var redPieceFour = new Piece('red-base', 0, '42em', '42em');
 
 var red = new Player(
   'red',
-  'field-28',
-  [redPieceOne, redPieceTwo, redPieceThree, redPieceFour],
+  'field-28', [redPieceOne, redPieceTwo, redPieceThree, redPieceFour],
   3
 );
 
@@ -47,8 +44,7 @@ var bluePieceFour = new Piece('blue-base', 0, '14em', '42em');
 
 var blue = new Player(
   'blue',
-  'field-41',
-  [bluePieceOne, bluePieceTwo, bluePieceThree, bluePieceFour],
+  'field-41', [bluePieceOne, bluePieceTwo, bluePieceThree, bluePieceFour],
   3
 );
 
@@ -74,4 +70,4 @@ var dice = new Dice([one, two, three, four, five, six], 0, false);
 
 // Count how many times the dice has rolled.
 var numberOfDiceRolls = 0;
-var numberOfPieceMoves = 0;
+var movesLeft = 0;

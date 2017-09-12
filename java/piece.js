@@ -7,169 +7,177 @@ function Piece(position, count, cx, cy) {
   this.count = count;
   this.cx = cx;
   this.cy = cy;
-}
 
-/**
- * Start function for moving the piece. Here we decide what kind of move.
- *
- * @var string id
- */
-Piece.prototype.move = function (id) {
-  this.id = id;
-  // The piece is at home and dice is six
-  if (this.count === 0 && dice.activeNumber.number === 6) {
-    this.moveFromHome();
-  } else if (this.position.includes('base') === false &&
-    this.position.includes('final') === false) {
-    if (this.count+dice.activeNumber.number > 51) {
+  /**
+   * Start function for moving the piece. Here we decide what kind of move.
+   *
+   * @var string id
+   */
+  this.move = function (id) {
+    this.id = id;
+    // The piece is at home and dice is six
+    if (this.count === 0 && dice.activeNumber.number === 6) {
+      this.moveFromHome();
+    } else if (this.count + 1 > 51) { // Final stretch.
       this.moveFinal();
-    } else {
+    } else if (this.count + 1 < 52 && this.count > 0) { // Ordinary movement.
       this.moveOrdinary();
+    } else { // If you try to move a piece "at home base" with a dice below six.
+      alert('Denne brik kan vist ikke flyttes?');
     }
-  } else if (this.position.includes('final') === true) {
-    this.moveFinal();
-  } else {
-    alert('Denne brik kan vist ikke flyttes?');
-  }
+  };
 
-};
+  /**
+   * Move the piece from home onto the plate.
+   */
+  this.moveFromHome = function () {
+    var field = $("#" + activePlayer.startField)[0];
+    activePlayer.attemptsLeft = 0;
+    this.count = 1;
+    this.moveThePiece(field, "notHome");
+    this.finalAction(this.id, "notHome");
+  };
 
-/**
- *
- * Move the piece from home onto the plate.
- *
- */
-Piece.prototype.moveFromHome = function () {
-  var field = $("#" + activePlayer.startField)[0];
-  activePlayer.attemptsLeft = 0;
-  this.count = 1;
-  this.moveThePiece(field, "notHome");
-};
+  /**
+   * Finds the next field for an ordinary turn.
+   * @var integer
+   */
+  this.moveOrdinary = function () {
+    var fieldNumber = 0;
 
-/**
- * Finds the next field for an ordinary turn.
- * @var integer
- * @return field
- */
-Piece.prototype.moveOrdinary = function () {
+    // moveThePiece must be called with window.setTimeout() function
+    if (movesLeft < dice.activeNumber.number) {
+      movesLeft += 1;
+      fieldNumber = parseInt(this.position.split('-')[1]) + 1;
+      var newField = (fieldNumber < 53) ?
+        $("#field-" + fieldNumber)[0] :
+        $("#field-" + (fieldNumber - 52))[0];
+      this.count += 1;
+      this.moveThePiece(newField, "notHome");
 
-  var fieldNumber = parseInt(this.position.split('-')[1]) + dice.activeNumber.number;
-  var newField = (fieldNumber < 53) ?
-    $("#field-" + fieldNumber)[0] :
-    $("#field-" + (fieldNumber - 52))[0];
+      window.setTimeout(clickPiece, 150 * movesLeft, this.id);
+    } else {
+      movesLeft = 0;
+      this.finalAction("notHome");
+    }
+  };
 
-  this.count += dice.activeNumber.number;
-  this.moveThePiece(newField, "notHome");
-};
+  /**
+   * Finds the next field for the final run.
+   */
+  this.moveFinal = function () {
+    var fieldNumber = 0;
+    if (movesLeft < dice.activeNumber.number) {
+      movesLeft += 1;
+      fieldNumber = (this.count + 1) - 51;
+      var newField = (fieldNumber < 6) ?
+        $("#" + activePlayer.color + "-final-" + fieldNumber)[0] :
+        $('#' + activePlayer.color + '-home')[0];
+      this.count += 1;
+      this.moveThePiece(newField, "notHome");
+      window.setTimeout(clickPiece, 150 * movesLeft, this.id);
+    } else {
+      movesLeft = 0;
+      this.finalAction("notHome");
+    }
+  };
 
-/**
- * Finds the next field for the final run.
- * @return field
- */
-Piece.prototype.moveFinal = function () {
+  /**
+   * Sent the piece back home
+   * @var color
+   * @var place
+   */
+  this.goHome = function (color, place) {
+    var homeBase = document.getElementById(color + "-base-" + place);
 
-  var fieldNumber = (this.count+dice.activeNumber.number)-51;
+    this.count = 0;
+    this.moveThePiece(homeBase, "home");
+    this.finalAction("home");
+  };
 
-  var field = (fieldNumber < 6) ?
-    $("#" + activePlayer.color + "-final-" + fieldNumber)[0] :
-    $('#' + activePlayer.color + '-home')[0];
-  this.count += dice.activeNumber.number;
-  this.moveThePiece(field, "notHome");
-};
+  /**
+   * This does the actual movement of the piece.
+   * @var field
+   * @var typeOfMovement
+   */
+  this.moveThePiece = function (field, typeOfMovement) {
+    var cx = 0;
+    var cy = 0;
 
-Piece.prototype.goHome = function (color, place) {
+    if (typeOfMovement === "notHome") {
+      cx = (parseInt(field.attributes.x.value.replace('em', '')) + 1.5);
+      cy = (parseInt(field.attributes.y.value.replace('em', '')) + 1.5);
+    } else {
+      cx = (parseInt(field.attributes.cx.value.replace('em', '')));
+      cy = (parseInt(field.attributes.cy.value.replace('em', '')));
+    }
 
-  var homeBase = document.getElementById(color + "-base-" + place);
+    this.cx = cx + "em";
+    this.cy = cy + "em";
 
-  this.count = 0;
-  this.moveThePiece(homeBase, "home");
-};
+    this.setXandY(field);
 
-/**
- * Set the X for the piece and html element
- * @var x
- * @var element
- * @return this
- */
-Piece.prototype.setCx = function () {
-  $("#" + this.id).attr('cx', this.cx);
-};
-
-/**
- * Set the Y for the piece and html element
- * @var y
- * @var element
- * @return this
- */
-Piece.prototype.setCy = function () {
-  $("#" + this.id).attr('cy', this.cy);
-};
-
-Piece.prototype.moveThePiece = function (field, typeOfMovement) {
-  var cx = 0;
-  var cy = 0;
-
-  if (typeOfMovement === "notHome") {
-    cx = (parseInt(field.attributes.x.value.replace('em', '')) + 1.5);
-    cy = (parseInt(field.attributes.y.value.replace('em', '')) + 1.5);
-  } else {
-    cx = (parseInt(field.attributes.cx.value.replace('em', '')));
-    cy = (parseInt(field.attributes.cy.value.replace('em', '')));
-  }
-
-  this.cx = cx + "em";
-  this.cy = cy + "em";
-
-  numberOfPieceMoves = numberOfPieceMoves + 1;
-
-  this.setXandY(field);
-
-  // Check if piece hits an opponent or own piece.
-  var pieces = document.querySelectorAll("circle[type='piece']");
-
-  for (var i = 0; i < pieces.length; i++) {
-    if (this.cx === pieces[i].attributes.cx.value
-        && this.cy === pieces[i].attributes.cy.value) {
-      if (pieces[i].attributes.color.value !== this.id.split('-')[0]) { // Opponent
-        for (var j = 0; j < players.length; j++) {
-          if (players[j].color === pieces[i].attributes.color.value) { // Fetching correct player color
-            var pieceId = (parseInt(pieces[i].attributes.id.value.split('-')[1]) - 1);
-            players[j].pieces[pieceId].goHome(
-              pieces[i].attributes.color.value,
-              pieces[i].attributes.id.value.split('-')[1]
-            );
-          }
+    // Check if the activePlayer has a piece on this position.
+    var pieces = document.querySelectorAll("circle[type='piece']");
+    for (var i = 0; i < pieces.length; i++) {
+      if (this.cx === pieces[i].attributes.cx.value &&
+        this.cy === pieces[i].attributes.cy.value) {
+        if (activePlayer.color === pieces[i].attributes.color.value &&
+          this.id !== pieces[i].attributes.id.value) {
+          movesLeft = dice.activeNumber.number;
         }
-      } else if (activePlayer.color === pieces[i].attributes.color.value
-          && this.id !== pieces[i].attributes.id.value) {
-        // Own piece. Cannot jump over.
-        console.log('her');
       }
     }
-  }
+  };
 
-  if (typeOfMovement !== "home") {
-    if (dice.activeNumber.number !== 6) {
-      //The user has moved and will lose its turn
-      activePlayer.changePlayer();
+  /**
+   * Sets the CX and CY for the piece.
+   * @var field
+   */
+  this.setXandY = function (field) {
+    if (field.attributes.id.value.indexOf('base') !== -1) {
+      this.position = field.attributes.id.value.substring(
+        0, field.attributes.id.value.length - 2
+      );
     } else {
-      // The user has thrown a 6 and gets another try.
-      activePlayer.attemptsLeft = 1;
-      $("#attemptsLeft").html(activePlayer.attemptsLeft);
+      this.position = field.attributes.id.value.replace('id=', '').replace('"', '');
     }
-    $("#diceButton").removeClass('busy').addClass('ready');
-    dice.thrown = false;
-  }
-};
+    // SET THE CY
+    $("#" + this.id).attr('cy', this.cy);
+    // SET THE CX
+    $("#" + this.id).attr('cx', this.cx);
+  };
 
-Piece.prototype.setXandY = function (field) {
-  if (field.attributes.id.value.indexOf('base') !== -1) {
-    this.position = field.attributes.id.value.substring(
-      0, field.attributes.id.value.length-2
-    );
-  } else {
-    this.position = field.attributes.id.value.replace('id=', '').replace('"', '');
-  }
-  this.setCy();
-  this.setCx();
-};
+  this.finalAction = function (typeOfMovement) {
+    if (typeOfMovement !== "home") {
+
+      // This is not complete - if two pieces at a place are missing.
+      for (var i = 0; i < players.length; i++) {
+        if (players[i].color !== activePlayer.color) {
+          playerPieces = players[i].pieces;
+          for (var j = 0; j < playerPieces.length; j++) {
+            if (this.cx === playerPieces[j].cx && this.cy === playerPieces[j].cy) {
+              players[i].pieces[j].goHome(player[i].color, (j + 1));
+            }
+          }
+        }
+      }
+
+      if (dice.activeNumber.number !== 6) {
+        //The user has moved and will lose its turn
+        activePlayer.changePlayer();
+      } else {
+        // The user has thrown a 6 and gets another try.
+        activePlayer.attemptsLeft = 1;
+        $("#attemptsLeft").html(activePlayer.attemptsLeft);
+      }
+      $("#diceButton").removeClass('busy').addClass('ready');
+      dice.thrown = false;
+    }
+  };
+
+}
+
+function clickPiece(id) {
+  $("#" + id).click();
+}
