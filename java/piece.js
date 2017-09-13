@@ -143,9 +143,9 @@ function Piece(position, count, cx, cy) {
       this.position = field.attributes.id.value.replace('id=', '').replace('"', '');
     }
     // SET THE CY
-    $("#" + this.id).attr('cy', this.cy);
+    document.getElementById(this.id).setAttribute('cy', this.cy);
     // SET THE CX
-    $("#" + this.id).attr('cx', this.cx);
+    document.getElementById(this.id).setAttribute('cx', this.cx);
   };
 
   this.finalAction = function (typeOfMovement) {
@@ -157,7 +157,7 @@ function Piece(position, count, cx, cy) {
           playerPieces = players[i].pieces;
           for (var j = 0; j < playerPieces.length; j++) {
             if (this.cx === playerPieces[j].cx && this.cy === playerPieces[j].cy) {
-              players[i].pieces[j].goHome(player[i].color, (j + 1));
+              players[i].pieces[j].goHome(players[i].color, (j + 1));
             }
           }
         }
