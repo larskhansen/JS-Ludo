@@ -87,8 +87,10 @@ function Piece(position, count, cx, cy) {
    * @var color
    * @var place
    */
-  this.goHome = function (color, place) {
-    var homeBase = document.getElementById(color + "-base-" + place);
+  this.goHome = function () {
+    var homeBase = document.getElementById(
+      this.id.split('-')[0] + "-base-" + (this.id.split('-')[1])
+    );
 
     this.count = 0;
     this.moveThePiece(homeBase, "home");
@@ -152,15 +154,21 @@ function Piece(position, count, cx, cy) {
     if (typeOfMovement !== "home") {
 
       // This is not complete - if two pieces at a place are missing.
+      var piecesOnSamePlate = [];
       for (var i = 0; i < players.length; i++) {
         if (players[i].color !== activePlayer.color) {
-          playerPieces = players[i].pieces;
+          var playerPieces = players[i].pieces;
           for (var j = 0; j < playerPieces.length; j++) {
             if (this.cx === playerPieces[j].cx && this.cy === playerPieces[j].cy) {
-              players[i].pieces[j].goHome(players[i].color, (j + 1));
+              piecesOnSamePlate.push(players[i].pieces[j]);
             }
           }
         }
+      }
+      if (piecesOnSamePlate.length == 1) {
+        piecesOnSamePlate[0].goHome();
+      } else if (piecesOnSamePlate.length > 1) {
+        this.goHome();
       }
 
       if (dice.activeNumber.number !== 6) {
