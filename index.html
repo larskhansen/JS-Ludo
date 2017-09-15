@@ -17,44 +17,44 @@
       <ul>
         <li>Mangler at man skal kunne vælge antal spillere</li>
         <li>Designet skal friskes lidt op</li>
-        <li>Mangler en del af ludo <a target="_blank" href="http://www.papskubber.dk/braetspil/ludo">reglerne</a></li>
-        <li>Bl.a.: "<i>Lander man på et felt, hvor der står en modstanders brik, bliver denne slået tilbage til startfelterne. Står der to eller flere af modstanderens brikker, er det dog din brik, der bliver slået tilbage.</i>"</li>
+        <li>Mangler en af ludo <a target="_blank" href="http://www.papskubber.dk/braetspil/ludo">reglerne</a></li>
+        <li>Manglende regl: For at ramme midten skal man slå det præcise antal øjne.<br />Slår man for meget, rykker man det overskydende antal øjne baglæns fra midten.</li>
       </ul>
       <p>Aktiv spiller: <span id="showActivePlayer"></span><br />Forsøg tilbage: <span id="attemptsLeft"></span></p>
     </div>
     &nbsp;<svg id="diceSvg" width="4em" height="4em">
         <rect id="dice" width="4em" height="4em" stroke="black" fill="lightgray" />
         <!-- ONE -->
-        <circle dice="one" class="" id="one-one" cx="2em" cy="2em" r="0.4em" stroke="black" fill="black" />
+        <circle type="diceEye" dice="one" class="" id="one-one" cx="2em" cy="2em" r="0.4em" stroke="black" fill="black" />
         <!-- TWO -->
-        <circle dice="two" class="hide" id="two-one" cx="1.5em" cy="1.5em" r="0.4em" stroke="black" fill="black" />
-        <circle dice="two" class="hide" id="two-two" cx="2.5em" cy="2.5em" r="0.4em" stroke="black" fill="black" />
+        <circle type="diceEye" dice="two" class="hide" id="two-one" cx="1.5em" cy="1.5em" r="0.4em" stroke="black" fill="black" />
+        <circle type="diceEye" dice="two" class="hide" id="two-two" cx="2.5em" cy="2.5em" r="0.4em" stroke="black" fill="black" />
         <!-- THREE -->
-        <circle dice="three" class="hide" id="three-one" cx="1em" cy="1em" r="0.4em" stroke="black" fill="black" />
-        <circle dice="three" class="hide" id="three-two" cx="2em" cy="2em" r="0.4em" stroke="black" fill="black" />
-        <circle dice="three" class="hide" id="three-three" cx="3em" cy="3em" r="0.4em" stroke="black" fill="black" />
+        <circle type="diceEye" dice="three" class="hide" id="three-one" cx="1em" cy="1em" r="0.4em" stroke="black" fill="black" />
+        <circle type="diceEye" dice="three" class="hide" id="three-two" cx="2em" cy="2em" r="0.4em" stroke="black" fill="black" />
+        <circle type="diceEye" dice="three" class="hide" id="three-three" cx="3em" cy="3em" r="0.4em" stroke="black" fill="black" />
         <!-- FOUR -->
-        <circle dice="four" class="hide" id="four-one" cx="1em" cy="1em" r="0.4em" stroke="black" fill="black" />
-        <circle dice="four" class="hide" id="four-two" cx="3em" cy="1em" r="0.4em" stroke="black" fill="black" />
-        <circle dice="four" class="hide" id="four-three" cx="1em" cy="3em" r="0.4em" stroke="black" fill="black" />
-        <circle dice="four" class="hide" id="four-four" cx="3em" cy="3em" r="0.4em" stroke="black" fill="black" />
+        <circle type="diceEye" dice="four" class="hide" id="four-one" cx="1em" cy="1em" r="0.4em" stroke="black" fill="black" />
+        <circle type="diceEye" dice="four" class="hide" id="four-two" cx="3em" cy="1em" r="0.4em" stroke="black" fill="black" />
+        <circle type="diceEye" dice="four" class="hide" id="four-three" cx="1em" cy="3em" r="0.4em" stroke="black" fill="black" />
+        <circle type="diceEye" dice="four" class="hide" id="four-four" cx="3em" cy="3em" r="0.4em" stroke="black" fill="black" />
         <!-- FIVE -->
-        <circle dice="five" class="hide" id="five-one" cx="1em" cy="1em" r="0.4em" stroke="black" fill="black" />
-        <circle dice="five" class="hide" id="five-two" cx="3em" cy="1em" r="0.4em" stroke="black" fill="black" />
-        <circle dice="five" class="hide" id="five-three" cx="1em" cy="3em" r="0.4em" stroke="black" fill="black" />
-        <circle dice="five" class="hide" id="five-four" cx="3em" cy="3em" r="0.4em" stroke="black" fill="black" />
-        <circle dice="five" class="hide" id="five-five" cx="2em" cy="2em" r="0.4em" stroke="black" fill="black" />
+        <circle type="diceEye" dice="five" class="hide" id="five-one" cx="1em" cy="1em" r="0.4em" stroke="black" fill="black" />
+        <circle type="diceEye" dice="five" class="hide" id="five-two" cx="3em" cy="1em" r="0.4em" stroke="black" fill="black" />
+        <circle type="diceEye" dice="five" class="hide" id="five-three" cx="1em" cy="3em" r="0.4em" stroke="black" fill="black" />
+        <circle type="diceEye" dice="five" class="hide" id="five-four" cx="3em" cy="3em" r="0.4em" stroke="black" fill="black" />
+        <circle type="diceEye" dice="five" class="hide" id="five-five" cx="2em" cy="2em" r="0.4em" stroke="black" fill="black" />
         <!-- SIX -->
-          <circle dice="six" class="hide" id="six-one" cx="1em" cy="1em" r="0.4em" stroke="black" fill="black" />
-          <circle dice="six" class="hide" id="six-two" cx="3em" cy="1em" r="0.4em" stroke="black" fill="black" />
-          <circle dice="six" class="hide" id="six-three" cx="1em" cy="2em" r="0.4em" stroke="black" fill="black" />
-          <circle dice="six" class="hide" id="six-four" cx="3em" cy="2em" r="0.4em" stroke="black" fill="black" />
-          <circle dice="six" class="hide" id="six-five" cx="1em" cy="3em" r="0.4em" stroke="black" fill="black" />
-          <circle dice="six" class="hide" id="six-six" cx="3em" cy="3em" r="0.4em" stroke="black" fill="black" />
+        <circle type="diceEye" dice="six" class="hide" id="six-one" cx="1em" cy="1em" r="0.4em" stroke="black" fill="black" />
+        <circle type="diceEye" dice="six" class="hide" id="six-two" cx="3em" cy="1em" r="0.4em" stroke="black" fill="black" />
+        <circle type="diceEye" dice="six" class="hide" id="six-three" cx="1em" cy="2em" r="0.4em" stroke="black" fill="black" />
+        <circle type="diceEye" dice="six" class="hide" id="six-four" cx="3em" cy="2em" r="0.4em" stroke="black" fill="black" />
+        <circle type="diceEye" dice="six" class="hide" id="six-five" cx="1em" cy="3em" r="0.4em" stroke="black" fill="black" />
+        <circle type="diceEye" dice="six" class="hide" id="six-six" cx="3em" cy="3em" r="0.4em" stroke="black" fill="black" />
       </svg>&nbsp;<button id="diceButton" class="ready" type="button">Kast terning</button>
     <br />
-    <svg width="50em" height="50em">
-        <rect width="48em" height="49em" stroke="blue" fill="black"
+    <svg width="48em" height="48em">
+        <rect width="48em" height="48em" stroke="blue" fill="black"
        fill-opacity="0.5" stroke-opacity="0.8"/>
         <!-- YELLOW HOME BASE -->
         <circle id="yellow-base-1" cx="6em" cy="6em" r="3em" stroke="green" stroke-width="4" fill="yellow" />

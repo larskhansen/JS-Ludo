@@ -22,7 +22,8 @@ function Player(color, startField, pieces, attemptsLeft) {
    */
   this.reduceAttempts = function () {
     this.attemptsLeft = (this.attemptsLeft - 1);
-    $("#attemptsLeft").html(this.attemptsLeft);
+    document.getElementById("attemptsLeft").innerHTML = this.attemptsLeft;
+    //    $("#attemptsLeft").html(this.attemptsLeft);
   };
 
   /**
@@ -69,7 +70,9 @@ function Player(color, startField, pieces, attemptsLeft) {
 
     activePlayer.attemptsLeft = (activePlayer.hasActivePieces()) ? 1 : 3;
     dice.thrown = false;
-    $("#showActivePlayer").html(activePlayer.color);
-    $("#attemptsLeft").html(activePlayer.attemptsLeft);
+    document.getElementById("showActivePlayer").innerHTML = activePlayer.color;
+    //$("#showActivePlayer").html(activePlayer.color);
+    document.getElementById("attemptsLeft").innerHTML = activePlayer.attemptsLeft;
+    //$("#attemptsLeft").html(activePlayer.attemptsLeft);
   };
 }
