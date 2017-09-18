@@ -7,9 +7,7 @@ document.getElementById("diceButton").addEventListener("click", function () {
 });
 
 document.getElementById("showActivePlayer").innerHTML = activePlayer.color;
-//$("#showActivePlayer").html(activePlayer.color);
 document.getElementById("attemptsLeft").innerHTML = activePlayer.attemptsLeft;
-//$("#attemptsLeft").html(activePlayer.attemptsLeft);
 
 /**
  * Manipulate piece.

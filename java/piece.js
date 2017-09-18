@@ -32,7 +32,6 @@ function Piece(position, count, cx, cy) {
    */
   this.moveFromHome = function () {
     var field = document.getElementById(activePlayer.startField);
-    //$("#" + activePlayer.startField)[0];
     activePlayer.attemptsLeft = 0;
     this.count = 1;
     this.moveThePiece(field, "notHome");
@@ -50,10 +49,7 @@ function Piece(position, count, cx, cy) {
     if (movesLeft < dice.activeNumber.number) {
       movesLeft += 1;
       fieldNumber = parseInt(this.position.split('-')[1]) + 1;
-      /*var newField = (fieldNumber < 53) ?
-        $("#field-" + fieldNumber)[0] :
-        $("#field-" + (fieldNumber - 52))[0];
-      */
+
       var newField = (fieldNumber < 53) ?
         document.getElementById("field-" + fieldNumber) :
         document.getElementById("field-" + (fieldNumber - 52));
@@ -156,9 +152,8 @@ function Piece(position, count, cx, cy) {
   };
 
   this.finalAction = function (typeOfMovement) {
-    if (typeOfMovement !== "home") {
 
-      // This is not complete - if two pieces at a place are missing.
+    if (typeOfMovement !== "home") { //
       var piecesOnSamePlate = [];
       for (var i = 0; i < players.length; i++) {
         if (players[i].color !== activePlayer.color) {
@@ -183,10 +178,8 @@ function Piece(position, count, cx, cy) {
         // The user has thrown a 6 and gets another try.
         activePlayer.attemptsLeft = 1;
         document.getElementById("attemptsLeft").innerHTML = activePlayer.attemptsLeft;
-        //$("#attemptsLeft").html(activePlayer.attemptsLeft);
       }
       document.getElementById("diceButton").className = "ready";
-      //$("#diceButton").removeClass('busy').addClass('ready');
       dice.thrown = false;
     }
   };

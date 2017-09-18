@@ -23,7 +23,6 @@ function Dice(numbers, activeNumber, thrown) {
         // The dice is rolling
         // Set the button to busy
         document.getElementById("diceButton").className = "busy";
-        //$("#diceButton").removeClass('ready').addClass('busy');
         newNumber();
         numberOfDiceRolls++;
         window.setTimeout(changeDice, 250 * numberOfDiceRolls);
