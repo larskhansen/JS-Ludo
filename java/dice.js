@@ -22,7 +22,8 @@ function Dice(numbers, activeNumber, thrown) {
       if (numberOfDiceRolls < 3 && dice.thrown == false) {
         // The dice is rolling
         // Set the button to busy
-        $("#diceButton").removeClass('ready').addClass('busy');
+        document.getElementById("diceButton").className = "busy";
+        //$("#diceButton").removeClass('ready').addClass('busy');
         newNumber();
         numberOfDiceRolls++;
         window.setTimeout(changeDice, 250 * numberOfDiceRolls);
@@ -48,7 +49,7 @@ function Dice(numbers, activeNumber, thrown) {
           }
           // There is no pieces to move.
           this.thrown = false;
-          $("#diceButton").addClass('ready').removeClass('busy');
+          document.getElementById("diceButton").className = "ready";
         }
       }
     } else {
@@ -62,14 +63,26 @@ function Dice(numbers, activeNumber, thrown) {
  *
  */
 function changeDice() {
+  var diceEyes = document.querySelectorAll("circle[type='diceEye']");
+  for (var i = 0; i < diceEyes.length; i++) {
+    diceEyes[i].classList.add("hide");
+  }
+  /*
   $('#diceSvg circle').each(function () {
     $(this).addClass('hide');
   });
-
+  */
+  var activeDiceEyes = document.querySelectorAll('circle[dice="' + dice.activeNumber.textNumber + '"]');
+  for (var j = 0; j < activeDiceEyes.length; j++) {
+    activeDiceEyes[j].classList.remove("hide");
+  }
+  /*
   $('circle[dice="' + dice.activeNumber.textNumber + '"]').each(function () {
     $(this).removeClass('hide');
   });
-  $("#diceButton").click();
+  */
+  document.getElementById("diceButton").click();
+  //$("#diceButton").click();
 }
 
 function newNumber() {
